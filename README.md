@@ -1,20 +1,20 @@
 # Predicting Road Accident Risk
 
 ## Tổng quan
-Dự án này sử dụng học máy tuyến tính (`Linear Regression`) để dự đoán chỉ số nguy cơ tai nạn giao thông (`accident_risk`) dựa trên các đặc trưng về đường, điều kiện thời tiết và thời điểm trong ngày.
+Dự án này sử dụng mô hình hồi quy tuyến tính (`Linear Regression`) để dự đoán chỉ số rủi ro tai nạn giao thông (`accident_risk`). Dữ liệu được xử lý từ thông tin về đường, thời tiết, chi tiết chiếu sáng và thời điểm xảy ra.
 
 Notebook chính: `Predicting_Road_Accident_Risk.ipynb`
 
 ## Mục tiêu
-- Khám phá và trực quan hóa dữ liệu tai nạn giao thông.
-- Tiền xử lý dữ liệu: loại bỏ biến không quan trọng, mã hóa biến phân loại và biến boolean.
-- Huấn luyện mô hình hồi quy tuyến tính để dự đoán mức độ rủi ro.
-- Đánh giá mô hình bằng các chỉ số: R-squared, MAE, MSE, RMSE.
+- Khám phá dữ liệu và trực quan hoá các biến quan trọng.
+- Tiền xử lý dữ liệu: chuyển đổi dữ liệu boolean, mã hóa categorical và loại bỏ các biến ít ảnh hưởng.
+- Tính ma trận tương quan trên toàn bộ feature đã được xử lý.
+- Huấn luyện và đánh giá mô hình `LinearRegression` bằng R², MAE, MSE, RMSE.
 
 ## Dữ liệu
-Tệp dữ liệu: `Predicting_Road_Accident_Risk.csv`
+Tệp dữ liệu chính: `Predicting_Road_Accident_Risk.csv`
 
-Các cột chính:
+Các cột quan trọng:
 - `id`
 - `road_type`
 - `num_lanes`
@@ -28,17 +28,22 @@ Các cột chính:
 - `holiday`
 - `school_season`
 - `num_reported_accidents`
-- `accident_risk` (biến mục tiêu)
+- `accident_risk` (target)
 
-## Các bước thực hiện
-1. Nhập các thư viện: `numpy`, `pandas`, `matplotlib`, `seaborn`, `scikit-learn`.
-2. Đọc và khám phá dữ liệu.
-3. Hiển thị thống kê cơ bản và biểu đồ phân phối.
-4. Tính ma trận tương quan và lựa chọn biến quan trọng.
-5. Mã hóa biến boolean và biến phân loại bằng One-Hot Encoding.
-6. Tách dữ liệu thành `X` và `y`, sau đó chia thành tập huấn luyện và kiểm tra.
-7. Huấn luyện mô hình `LinearRegression`.
-8. Đánh giá kết quả dự đoán và kiểm tra giả thiết hồi quy.
+## Quy trình xử lý
+1. Đọc dữ liệu và kiểm tra thông tin.
+2. Khám phá dữ liệu bằng biểu đồ phân phối và pairplot.
+3. Chuyển đổi cột boolean sang số: `True` → `1`, `False` → `0`.
+4. Mã hóa biến phân loại bằng One-Hot Encoding.
+5. Tính ma trận tương quan trên toàn bộ dữ liệu đã mã hóa.
+6. Loại bỏ các feature có tương quan yếu với `accident_risk` (ngưỡng có thể điều chỉnh).
+7. Chia dữ liệu thành tập huấn luyện và kiểm tra.
+8. Huấn luyện mô hình và đánh giá bằng các chỉ số phù hợp.
+
+## Kết quả hiện tại
+- Các feature có ảnh hưởng mạnh nhất: `curvature`, `lighting_night`, `speed_limit`, `lighting_dim`, `num_reported_accidents`.
+- Các feature bị loại bỏ do tương quan yếu: `road_type_rural`, `time_of_day_evening`, `time_of_day_morning`, `num_lanes`, `school_season`, `road_signs_present`.
+- Notebook đánh giá cả R² trên tập train và tập test.
 
 ## Cài đặt và chạy
 1. Tạo môi trường ảo (tuỳ chọn):
@@ -46,18 +51,19 @@ Các cột chính:
    python -m venv .venv
    .\.venv\Scripts\Activate.ps1
    ```
-2. Cài đặt thư viện:
+2. Cài đặt các thư viện:
    ```bash
    pip install -r requirements.txt
    ```
-3. Mở và chạy notebook `Predicting_Road_Accident_Risk.ipynb` bằng Jupyter Notebook hoặc VS Code.
+3. Mở `Predicting_Road_Accident_Risk.ipynb` và chạy theo các cell trong notebook.
 
-## Kết quả chính
-- Mô hình hồi quy tuyến tính được huấn luyện từ dữ liệu đã tiền xử lý.
-- Hiển thị trực quan quan hệ giữa các đặc trưng quan trọng và `accident_risk`.
-- Đánh giá mô hình bằng đồ thị dự đoán so với thực tế, phân phối sai số và scatter plot residuals.
+## Thư mục và file
+- `Predicting_Road_Accident_Risk.ipynb`: Notebook chính chứa toàn bộ quy trình tiền xử lý, mô hình và đánh giá.
+- `Predicting_Road_Accident_Risk.csv`: Dữ liệu đã làm sạch dùng để xây dựng mô hình.
+- `Cleaned_Road_Accident_Risk.csv`: Dữ liệu sạch dùng trong notebook.
+- `requirements.txt`: Danh sách thư viện cần cài đặt.
 
 ## Ghi chú
-- Dữ liệu có chứa nhiều biến phân loại và boolean nên cần mã hóa trước khi huấn luyện.
-- Tỷ lệ chia dữ liệu trong notebook là 99% train và 1% test.
-- Có thể điều chỉnh ngưỡng tương quan và số lượng biến giữ lại để cải thiện mô hình.
+- Notebook hiện tại chia dữ liệu thành 99% train và 1% test.
+- Nếu cần, có thể điều chỉnh ngưỡng loại bỏ feature hoặc tỷ lệ train/test để cải thiện kết quả.
+- Ma trận tương quan được tính sau khi xử lý dữ liệu để đảm bảo không bỏ sót các feature boolean/categorical.
